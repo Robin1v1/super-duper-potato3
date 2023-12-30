@@ -1,0 +1,48 @@
+-- Define the function to check if a player is within range
+local function isPlayerWithinRange(player)
+    -- Calculate the distance between players
+    local distance = (player.Character.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+    return distance <= 30 -- Changed range to 30
+end
+
+-- Define the function to attack the player
+local function attackPlayer(player)
+    -- Implement your logic to attack the specified 'player'
+    -- Example: Use Roblox functions to perform attacks
+    -- Example:
+    -- local tool = game.Players.LocalPlayer.Backpack:FindFirstChild("YourWeaponName")
+    -- if tool then
+    --     game.Players.LocalPlayer.Character.Humanoid:EquipTool(tool)
+    --     game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(YourAttackAnimation):Play()
+    --     -- FireServer or use appropriate Roblox API to perform attacks
+    -- end
+end
+
+-- Define the main function to execute the kill aura
+local function killAura()
+    while true do
+        -- Get the list of players in the game
+        local players = game:GetService("Players"):GetPlayers()
+
+        for _, player in ipairs(players) do
+            if player ~= game.Players.LocalPlayer then -- Avoid attacking yourself
+                if isPlayerWithinRange(player) then
+                    attackPlayer(player)
+                end
+            end
+        end
+
+        -- Add a delay to prevent excessive attacks
+        wait(0.1)
+    end
+end
+
+-- Call the main function to start the kill aura
+killAura()
+
+-- Display a notification after executing the script
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Kill Aura",
+    Text = "Executed",
+    Duration = 5 -- Notification duration in seconds
+})
